@@ -27,6 +27,37 @@ pub struct UnitStats {
     pub build_cost: u32,
 }
 
+/// Represents the base chassis or "frame" of a modular unit.
+/// In a game like Earth 2150, the frame determines base movement semantics,
+/// weight capacity, and hitpoints.
+#[derive(Component, Reflect, Debug, Default, Eq, PartialEq, Hash, Clone, Copy)]
+#[reflect(Component, Default)]
+pub enum FrameType {
+    #[default]
+    Bipedal,
+    Quadpedal,
+    Tracked,
+    Wheeled,
+    Helicopter,
+    QuadCopter,
+    FixedWing, // Jet
+    Vtol,
+}
+
+/// A component representing a weapon attached to a unit.
+/// In Bevy ECS, we can attach this as a component on a child entity.
+/// This allows the weapon to inherit the parent's movement, but also aim/rotate independently!
+#[derive(Component, Reflect, Debug, Default)]
+#[reflect(Component)]
+pub struct WeaponModule {
+    pub damage: f32,
+    pub range: f32,
+    // how fast it can fire (attacks per second)
+    pub fire_rate: f32,
+    // how long until the next shot can fire
+    pub cooldown_timer: f32,
+}
+
 /// A simple tag component so we know which team a unit belongs to.
 #[derive(Component, Reflect, Debug)]
 #[reflect(Component)]
@@ -68,6 +99,8 @@ fn main() {
         .register_type::<UnitStats>()
         .register_type::<Team>()
         .register_type::<PanOrbitCamera>()
+        .register_type::<FrameType>()
+        .register_type::<WeaponModule>()
         
         // 4. We run our startup logic once.
         .add_systems(Startup, setup)
@@ -88,23 +121,55 @@ fn setup(mut commands: Commands) {
         Name::new("Main Camera"),
     ));
 
-    // Let's spawn a test unit just so we can see it in our new Development UI!
+    // Let's spawn a modular test unit using the parent-child entity pattern.
+    // The parent entity represents the "Frame" (the chassis).
     commands.spawn((
         // The display name in the entity tree
-        Name::new("Test Commander Unit"),
+        Name::new("Modular Test Unit - Tracked"),
         
         // Our custom components!
         UnitStats {
-            max_health: 1500.0,
-            current_health: 1500.0,
-            movement_speed: 4.5,
-            build_cost: 1000,
+            max_health: 2000.0,
+            current_health: 2000.0,
+            movement_speed: 3.5, // tracked vehicles are a bit slower
+            build_cost: 1200,
         },
         Team(1),
         
+        // We explicitly define what frame it is here!
+        FrameType::Tracked,
+        
         // A basic transform so it exists somewhere in the world
         Transform::default(),
-    ));
+        // Because a parent-child relationship needs visibility and global transforms
+        // to propagate, Bevy usually provides bundles like `SpatialBundle`, but Transform is enough for pure headless data for now.
+    )).with_children(|parent| {
+        // Here we add components to the unit! 
+        // We spawn a child entity representing a connected weapon module.
+        parent.spawn((
+            Name::new("Weapon Module - Cannon"),
+            WeaponModule {
+                damage: 50.0,
+                range: 15.0,
+                fire_rate: 1.0, 
+                cooldown_timer: 0.0,
+            },
+            // A child needs its own transform relative to the parent frame
+            Transform::from_xyz(0.0, 0.0, 1.0),
+        ));
+        
+        // Let's attach a second weapon just because we can!
+        parent.spawn((
+            Name::new("Weapon Module - Machine Gun"),
+            WeaponModule {
+                damage: 5.0,
+                range: 10.0,
+                fire_rate: 10.0, 
+                cooldown_timer: 0.0,
+            },
+            Transform::from_xyz(1.0, 0.0, 0.0),
+        ));
+    });
 }
 
 /// A Bevy "System" is just a standard Rust function.
