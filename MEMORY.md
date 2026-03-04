@@ -15,3 +15,8 @@ The initial gameplay iteration will focus on a PvE wave-defense style against al
 - **Architecture**: See `docs/architecture.md` for details on game simulation, ECS, networking, etc.
 - **Tech Stack**: See `docs/tech_stack.md` for language and library choices.
 - **Workflows**: See `.agent/workflows` for custom agent behaviours.
+
+## Next Steps
+- **Basic Unit Movement**: Write a system to move the frame over time towards a target so we can see the weapons translate with it.
+- **Weapon Targeting/Firing**: Set up a basic distance check so the child `WeaponModule` will start cooldown timers when an enemy gets close. 
+- **Spawning Aliens!**: Set up our first wave of simple PvE creatures.
