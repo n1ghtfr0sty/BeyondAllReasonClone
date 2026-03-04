@@ -10,6 +10,7 @@
 ## Graphics/Rendering
 - **Engine**: Bevy's default wgpu-based renderer.
 - **State Interpolation**: Visual transforms will interpolate between the previous and current fixed simulation ticks to provide smooth rendering despite a fixed timestep simulation.
+- **Camera**: Top-down RTS camera (`PanOrbitCamera`) driven by a decoupling of standard inputs (WASD + Scroll Wheel).
 
 ## Audio
 - **Engine**: Bevy's built-in audio system (or `bevy_kira_audio` if more advanced features are needed later).
