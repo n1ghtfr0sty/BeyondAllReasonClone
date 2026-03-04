@@ -1,12 +1,14 @@
 # Agent Memory
 
 ## High-Level Goal
-Build a clone of "Beyond All Reason", a large-scale real-time strategy (RTS) game.
+Build a multiplayer "Beyond All Reason" / "Earth 2150" inspired large-scale real-time strategy (RTS) game.
+The initial gameplay iteration will focus on a PvE wave-defense style against alien creatures, where players feel very powerful fighting hordes of enemies.
 
 ## Key Constraints & Definitions
 - **Engine**: Bevy (Rust)
 - **Architecture**: Strict strict separation of simulation and rendering. Deterministic Lockstep networking model.
 - **Focus**: Large-scale battles (10,000+ units), economy management, and deterministic gameplay.
+- **Unit Design**: Units must be highly modular. Players should be able to design their units by combining frames and weapons.
 - **Communication Style:** When making code changes, always add comments structured as if explaining the concepts to a student.
 
 ## Pointers
