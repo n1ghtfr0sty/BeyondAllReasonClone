@@ -3,10 +3,13 @@
 *This document tracks the language, engine, and specific library choices for the project.*
 
 ## Core Language
-- TBD (e.g., C++, Rust, C#)
+- **Rust** (Edition 2021)
 
 ## Engine/Framework
-- TBD (e.g., Custom engine, Godot, Unity, Bevy)
+- **Bevy** (Latest stable version, e.g., 0.13+)
 
 ## Dependencies
-- TBD
+- `bevy`
+- `bevy-inspector-egui` (Development UI)
+- `bevy_egui` (UI Base)
+- Future additions: Serialization for networking, Fixed-point math libraries.

@@ -4,8 +4,10 @@
 Build a clone of "Beyond All Reason", a large-scale real-time strategy (RTS) game.
 
 ## Key Constraints & Definitions
-- TBD: We need to define the exact engine, language, and high-level structure.
-- **Focus**: Large-scale battles, economy management, and deterministic gameplay common to the Spring Engine and BAR.
+- **Engine**: Bevy (Rust)
+- **Architecture**: Strict strict separation of simulation and rendering. Deterministic Lockstep networking model.
+- **Focus**: Large-scale battles (10,000+ units), economy management, and deterministic gameplay.
+- **Communication Style:** When making code changes, always add comments structured as if explaining the concepts to a student.
 
 ## Pointers
 - **Architecture**: See `docs/architecture.md` for details on game simulation, ECS, networking, etc.
